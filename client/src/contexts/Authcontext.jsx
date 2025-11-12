@@ -10,30 +10,55 @@ export default function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const username = localStorage.getItem("username");
+    const userString = localStorage.getItem("user");
     const token = localStorage.getItem("token");
-    if (username && token) setUser({ username });
+    if (userString && token) {
+      try {
+        const userData = JSON.parse(userString);
+        setUser(userData);
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+      }
+    }
   }, []);
 
   // ✅ Login
   const login = async (form) => {
-    const res = await api.post("/auth/login", form);
-    const token = res.data.token || "dummy";
-    localStorage.setItem("username", form.username);
-    localStorage.setItem("token", token);
-    setUser({ username: form.username });
-    navigate("/");
+    try {
+      const res = await api.post("/auth/login", form);
+      // The server returns user data with token in cookie
+      const userData = res.data;
+
+      // Store user data in localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", "authenticated"); // Server uses httpOnly cookie
+
+      setUser(userData);
+      navigate("/");
+      return { success: true };
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error.message);
+      throw error;
+    }
   };
 
   // ✅ Register
   const register = async (form) => {
-    await api.post("/auth/register", form);
-    // auto-login after registration
-    await login(form);
+    try {
+      await api.post("/auth/register", form);
+      // After successful registration, login automatically
+      return await login(form);
+    } catch (error) {
+      console.error("Register error:", error.response?.data || error.message);
+      throw error;
+    }
   };
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     navigate("/login");
   };
