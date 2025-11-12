@@ -6,10 +6,26 @@ export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ username: "", password: "" });
   const [msg, setMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg("");
+    setIsLoading(true);
+
+    // Basic validation
+    if (!form.username.trim() || !form.password.trim()) {
+      setMsg("❌ Please fill in all fields");
+      setIsLoading(false);
+      return;
+    }
+
+    if (form.password.length < 6) {
+      setMsg("❌ Password must be at least 6 characters");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       if (isLogin) {
         await login(form);
@@ -17,7 +33,14 @@ export default function Auth() {
         await register(form);
       }
     } catch (err) {
-      setMsg(err.response?.data?.message || "❌ Something went wrong");
+      console.error("Auth error:", err);
+      const errorMessage = err.response?.data?.message ||
+                         err.response?.data?.error ||
+                         err.message ||
+                         "❌ Authentication failed. Please try again.";
+      setMsg(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
