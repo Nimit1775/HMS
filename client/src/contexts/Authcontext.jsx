@@ -22,7 +22,7 @@ export default function AuthProvider({ children }) {
     localStorage.setItem("username", form.username);
     localStorage.setItem("token", token);
     setUser({ username: form.username });
-    navigate("/");
+    navigate("/dashboard");
   };
 
   // ✅ Register

@@ -65,7 +65,7 @@ export const createBooking = (req, res) => {
 
 export const getAllBookings = (req, res) => {
   const q = `
-    SELECT b.booking_id, c.name, c.phone, r.room_number,
+    SELECT b.booking_id, c.name, c.phone, r.room_number, r.room_id,
            b.check_in, b.check_out
     FROM bookings b
     JOIN customers c ON b.customer_id = c.customer_id
@@ -86,6 +86,7 @@ export const getCurrentGuests = (req, res) => {
       b.booking_id,
       c.name,
       c.phone,
+      b.room_id,
       r.room_number,
       b.check_in,
       b.check_out

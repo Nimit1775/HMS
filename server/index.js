@@ -7,7 +7,11 @@ import Roomrouter from './routes/RoomRouter.js';
 const app = express() ; 
 
 app.use(express.json()) ;
-app.use(cors()) ;
+app.use(cors({
+   origin: "*",
+  credentials: true
+})) ;
+
 
 app.get("/", (req, res) => {
   res.send("Hotel Management Server is running");

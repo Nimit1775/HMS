@@ -29,6 +29,6 @@ export const login = (req, res) => {
     const { password: pwd, ...other } = data[0];
     res.cookie("access_token", token, {
         httpOnly: true,
-    }).status(200).json(other);
+    }).status(200).json({ ...other, token });
   });
 };

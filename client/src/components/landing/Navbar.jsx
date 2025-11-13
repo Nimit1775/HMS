@@ -43,7 +43,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <span className="text-2xl md:text-3xl font-bold text-blue-600 cursor-pointer" onClick={() => handleNavClick('#home')}>
-              HMS
+              Horizon
             </span>
           </div>
 
