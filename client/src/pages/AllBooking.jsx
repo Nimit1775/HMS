@@ -13,7 +13,7 @@ const AllBooking = () => {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get('http://localhost:8800/booking/all');
+      const res = await axios.get('https://hms-7pi0.onrender.com/booking/all');
       setBookings(res.data);
       setLoading(false);
     } catch (err) {
@@ -26,7 +26,7 @@ const AllBooking = () => {
     if (!window.confirm('Are you sure you want to checkout this guest?')) return;
 
     try {
-      await axios.post('http://localhost:8800/booking/checkout', {
+      await axios.post('https://hms-7pi0.onrender.com/booking/checkout', {
         booking_id,
         room_id
       });

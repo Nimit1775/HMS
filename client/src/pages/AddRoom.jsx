@@ -22,7 +22,7 @@ const AddRoom = () => {
     setMessage("");
 
     try {
-      const res = await axios.post("http://localhost:8800/rooms/add", form);
+      const res = await axios.post("https://hms-7pi0.onrender.com/rooms/add", form);
       
       setMessage("✅ Room added successfully!");
 

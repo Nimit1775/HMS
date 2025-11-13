@@ -1,6 +1,6 @@
 import axios from "axios";
 const api = axios.create({
-    baseURL: "http://localhost:8800",
+    baseURL: "https://hms-7pi0.onrender.com",
 });
 
 api.interceptors.request.use((config) => {
